@@ -12,5 +12,5 @@ networks:
     driver: bridge
 volumes:
   mavenwebappvol
-  driver: local
+   driver: local
 
