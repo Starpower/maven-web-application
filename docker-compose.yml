@@ -1,11 +1,16 @@
-version: '3.1'
+version: "3.1"
+name: mavenwebapplication
 services:
-  springboot:
-    image: dockerhandson/maven-web-application:VERSION
-    restart: always
+  mavenwebapp:
+    image: dheeravathshiva/maven-web-application:1
     ports:
     - 9090:8080
     networks:
     - mavenappbridge
 networks:
   mavenappbridge:
+    driver: bridge
+volumes:
+  mavenwebappvol
+  driver: local
+
