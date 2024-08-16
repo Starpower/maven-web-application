@@ -10,5 +10,8 @@ stage('Build'){
 sh "${mavenHome}/bin/mvn clean package"
 }
 
+stage("Build Docker image"){
+sh "docker build -t dheeravathshiva/maven-web-app-docker:${env.BUILD_NUMBER} ."
+}
 
 }
