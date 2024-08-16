@@ -25,4 +25,13 @@ sh "docker push 622446939929.dkr.ecr.ap-south-1.amazonaws.com/maven-web-applicat
 
 }
 
+stage("Deploy Application"){
+sshagent(['3d83cc37-2daf-40f7-9017-5d790ea036f9']) {
+sh "ssh -o StrictHostKeyChecking=no ubuntu@10.0.0.112 docker rm maven-web-application || true"
+sh "ssh ubuntu@10.0.0.112 aws ecr get-login-password --region ap-south-1 | ssh ubuntu@10.0.0.112 docker login --username AWS --password-stdin 622446939929.dkr.ecr.ap-south-1.amazonaws.com
+sh "ssh ubuntu@10.0.0.112 docker run -d --name mavenwebapplication -p 8081:8080 622446939929.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${env.BUILD_NUMBER}"
+}
+
+}
+
 }
