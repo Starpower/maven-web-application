@@ -1,0 +1,51 @@
+
+
+pipeline{
+    
+agent any
+
+tools{
+maven "maven3.9.7"
+}
+
+stages{
+    
+stage('Code-cloneing'){
+steps{
+git credentialsId: 'b860deb9-a1c0-46c0-a503-2c667c9166c0', url: 'https://github.com/Starpower/maven-web-application.git'}  
+}
+
+
+stage('Build'){
+steps{
+sh "mvn clean package"    
+}
+}
+
+stage("Build Docker image"){
+steps{
+sh "docker build -t  622446939929.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${env.BUILD_NUMBER} ."
+}
+}
+
+stage("Docker Push"){
+steps{
+sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 622446939929.dkr.ecr.ap-south-1.amazonaws.com"
+sh "docker push 622446939929.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${env.BUILD_NUMBER}"
+}
+}
+
+
+stage("Deploy Application"){
+steps{
+sshagent(['0dc93e97-8dcb-4660-bba2-7eff8441495c']) {
+sh "ssh -o StrictHostKeyChecking=no ubuntu@10.0.0.103 docker rm maven-web-application || true"
+sh "ssh ubuntu@10.0.0.103 aws ecr get-login-password --region ap-south-1 | ssh ubuntu@10.0.0.103 docker login --username AWS --password-stdin 622446939929.dkr.ecr.ap-south-1.amazonaws.com"
+sh "ssh ubuntu@10.0.0.103 docker run -d --name mavenwebapplication -p 8081:8081 622446939929.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${env.BUILD_NUMBER}"
+}
+}
+}
+
+
+}//stages closing
+}//pipeline closing
