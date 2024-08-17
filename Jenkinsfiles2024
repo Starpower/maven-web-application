@@ -13,6 +13,11 @@ stage('Maven Clean Package'){
 sh "${mavenHome}/bin/mvn clean package"
 }
 
+stage('Executesonarqubereport'){
+steps{
+sh "mvn clean sonar:sonar"
+}
+}
 
 stage("Build Docker image"){
 sh "docker build -t 622446939929.dkr.ecr.ap-south-1.amazonaws.com/maven-web-application:${env.BUILD_NUMBER} ."
