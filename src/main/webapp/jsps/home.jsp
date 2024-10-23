@@ -9,7 +9,7 @@
 </head>
 </head>
 <body>
-<h1 align="center">Welcome to Shiva Technologies Private Ltd. Ph No: +91-7893371646 ,Hyderabad,Telangana,India</h1>
+<h1 align="center">Welcome to Shiva Technologies Private Ltd. Ph No: +91-7893371646,Hyderabad,Telangana,India</h1>
 <h1 align="center"> Shiva Technologies- Very Good Training center for DevOps with AWS,Python & AWS Solution Architect in Bangalore India.Teaching Real Time scnerios</h1>
 <hr>
 <br>
